@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 
 export default function CalendarScreen() {
   const insets = useSafeAreaInsets();
@@ -25,15 +25,15 @@ export default function CalendarScreen() {
     '2025-03-04': { hours: 7.0, quality: 'Good' },
     '2025-03-05': { hours: 7.8, quality: 'Good' },
   };
-  
+
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
   };
-  
+
   const getFirstDayOfMonth = (month, year) => {
     return new Date(year, month, 1).getDay();
   };
-  
+
   const handlePrevMonth = () => {
     if (selectedMonth === 0) {
       setSelectedMonth(11);
@@ -42,7 +42,7 @@ export default function CalendarScreen() {
       setSelectedMonth(selectedMonth - 1);
     }
   };
-  
+
   const handleNextMonth = () => {
     if (selectedMonth === 11) {
       setSelectedMonth(0);
@@ -51,16 +51,16 @@ export default function CalendarScreen() {
       setSelectedMonth(selectedMonth + 1);
     }
   };
-  
+
   const handleDateSelect = (day) => {
     const newDate = new Date(selectedYear, selectedMonth, day);
     setSelectedDate(newDate);
   };
-  
+
   const formatDate = (date) => {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   };
-  
+
   const getSleepQualityColor = (quality) => {
     switch (quality) {
       case 'Excellent':
@@ -75,14 +75,14 @@ export default function CalendarScreen() {
         return colors.text.muted;
     }
   };
-  
+
   const renderCalendar = () => {
     const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
     const firstDayOfMonth = getFirstDayOfMonth(selectedMonth, selectedYear);
-    
+
     const days = [];
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
+
     // Render day names
     dayNames.forEach((name, index) => {
       days.push(
@@ -91,12 +91,12 @@ export default function CalendarScreen() {
         </View>
       );
     });
-    
+
     // Add empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(<View key={`empty-${i}`} style={styles.emptyCell} />);
     }
-    
+
     // Add cells for each day of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(selectedYear, selectedMonth, day);
@@ -104,7 +104,7 @@ export default function CalendarScreen() {
       const isToday = dateString === formatDate(new Date());
       const isSelected = dateString === formatDate(selectedDate);
       const hasSleepData = sleepData[dateString] !== undefined;
-      
+
       days.push(
         <TouchableOpacity
           key={`day-${day}`}
@@ -121,7 +121,7 @@ export default function CalendarScreen() {
           ]}>
             {day}
           </Text>
-          
+
           {hasSleepData && (
             <View
               style={[
@@ -133,14 +133,14 @@ export default function CalendarScreen() {
         </TouchableOpacity>
       );
     }
-    
+
     return <View style={styles.calendarGrid}>{days}</View>;
   };
-  
+
   const renderSelectedDateInfo = () => {
     const dateString = formatDate(selectedDate);
     const data = sleepData[dateString];
-    
+
     if (!data) {
       return (
         <View style={styles.noDataContainer}>
@@ -149,7 +149,7 @@ export default function CalendarScreen() {
         </View>
       );
     }
-    
+
     return (
       <View style={styles.sleepDataContainer}>
         <View style={styles.sleepDataHeader}>
@@ -163,20 +163,20 @@ export default function CalendarScreen() {
             <Text style={styles.qualityText}>{data.quality}</Text>
           </View>
         </View>
-        
+
         <View style={styles.sleepMetricsContainer}>
           <View style={styles.sleepMetric}>
             <Ionicons name="time-outline" size={24} color={colors.text.secondary} />
             <Text style={styles.metricValue}>{data.hours} hours</Text>
             <Text style={styles.metricLabel}>Total Sleep</Text>
           </View>
-          
+
           <View style={styles.sleepMetric}>
             <Ionicons name="bed-outline" size={24} color={colors.text.secondary} />
             <Text style={styles.metricValue}>11:30 PM</Text>
             <Text style={styles.metricLabel}>Bedtime</Text>
           </View>
-          
+
           <View style={styles.sleepMetric}>
             <Ionicons name="sunny-outline" size={24} color={colors.text.secondary} />
             <Text style={styles.metricValue}>7:00 AM</Text>
@@ -186,30 +186,30 @@ export default function CalendarScreen() {
       </View>
     );
   };
-  
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <Text style={styles.screenTitle}>Sleep Calendar</Text>
-      
+
       <View style={styles.monthSelector}>
         <TouchableOpacity onPress={handlePrevMonth}>
           <Ionicons name="chevron-back" size={24} color={colors.text.primary} />
         </TouchableOpacity>
-        
+
         <Text style={styles.monthYearText}>
           {new Date(selectedYear, selectedMonth).toLocaleString('default', { month: 'long' })} {selectedYear}
         </Text>
-        
+
         <TouchableOpacity onPress={handleNextMonth}>
           <Ionicons name="chevron-forward" size={24} color={colors.text.primary} />
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.calendarContainer}>
           {renderCalendar()}
         </View>
-        
+
         <View style={styles.selectedDateContainer}>
           {renderSelectedDateInfo()}
         </View>

@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 
 export default function ProfileScreen() {
   const router = useRouter();

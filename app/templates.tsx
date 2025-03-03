@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 
 // SVG Components to render the sleep cycle graph
 import Svg, { Path, Line, Text as SvgText } from 'react-native-svg';
@@ -19,7 +19,7 @@ import Svg, { Path, Line, Text as SvgText } from 'react-native-svg';
 export default function TemplatesScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  
+
   // Mock templates data
   const templates = [
     {
@@ -39,15 +39,15 @@ export default function TemplatesScreen() {
       hours: 10,
     },
   ];
-  
+
   const renderSleepCycleGraph = (template) => {
     // This is a simplified representation - in a real app, you'd use actual data
     const width = Dimensions.get('window').width - 80;
     const height = 100;
-    
+
     // Generate a smooth curve path for the sleep cycle based on template type
     let path;
-    
+
     if (template.type === 'Restorative sleep') {
       path = `
         M 0 ${height * 0.2}
@@ -62,23 +62,23 @@ export default function TemplatesScreen() {
         C ${width * 0.7} ${height * 0.6}, ${width * 0.8} ${height * 0.4}, ${width} ${height * 0.2}
       `;
     }
-    
+
     return (
       <View style={styles.graphContainer}>
         <Svg width={width} height={height}>
           {/* Sleep stage lines */}
           <Line x1="0" y1={height * 0.25} x2={width} y2={height * 0.25} stroke={colors.chart.awake} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.25 - 5} fill={colors.chart.awake} fontSize="12">Awake</SvgText>
-          
+
           <Line x1="0" y1={height * 0.5} x2={width} y2={height * 0.5} stroke={colors.chart.rem} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.5 - 5} fill={colors.chart.rem} fontSize="12">REM</SvgText>
-          
+
           <Line x1="0" y1={height * 0.75} x2={width} y2={height * 0.75} stroke={colors.chart.light} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.75 - 5} fill={colors.chart.light} fontSize="12">Light</SvgText>
-          
+
           <Line x1="0" y1={height * 0.95} x2={width} y2={height * 0.95} stroke={colors.chart.deep} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.95 - 5} fill={colors.chart.deep} fontSize="12">Deep</SvgText>
-          
+
           {/* Sleep cycle curve */}
           <Path
             d={path}
@@ -90,7 +90,7 @@ export default function TemplatesScreen() {
       </View>
     );
   };
-  
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
@@ -99,11 +99,11 @@ export default function TemplatesScreen() {
           <Ionicons name="close" size={24} color={colors.text.primary} />
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView showsVerticalScrollIndicator={false}>
         {templates.map((template) => (
-          <TouchableOpacity 
-            key={template.id} 
+          <TouchableOpacity
+            key={template.id}
             style={styles.templateCard}
             onPress={() => console.log(`Selected template: ${template.title}`)}
           >
@@ -113,19 +113,19 @@ export default function TemplatesScreen() {
                 <Ionicons name="create-outline" size={20} color={colors.text.secondary} />
               </TouchableOpacity>
             </View>
-            
+
             <Text style={styles.templateType}>{template.type}</Text>
-            
+
             <View style={styles.sleepInfo}>
               <Text style={styles.hoursText}>{template.hours} hours of sleep</Text>
-              
+
               <View style={styles.timeInfo}>
                 <View style={styles.timeBlock}>
                   <Ionicons name="moon-outline" size={16} color={colors.text.secondary} />
                   <Text style={styles.timeLabel}>Bedtime</Text>
                   <Text style={styles.timeValue}>{template.bedtime}</Text>
                 </View>
-                
+
                 <View style={styles.timeBlock}>
                   <Ionicons name="sunny-outline" size={16} color={colors.text.secondary} />
                   <Text style={styles.timeLabel}>Wake-Up Time</Text>
@@ -133,12 +133,12 @@ export default function TemplatesScreen() {
                 </View>
               </View>
             </View>
-            
+
             {renderSleepCycleGraph(template)}
           </TouchableOpacity>
         ))}
-        
-        <TouchableOpacity 
+
+        <TouchableOpacity
           style={styles.addTemplateButton}
           onPress={() => router.push('/create-template')}
         >

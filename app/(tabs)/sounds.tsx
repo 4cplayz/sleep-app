@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 
 // Mock data for sound categories
 const SOUND_CATEGORIES = [
@@ -44,11 +44,11 @@ const SOUNDS_DATA = [
 export default function SoundsScreen() {
   const insets = useSafeAreaInsets();
   const [selectedCategory, setSelectedCategory] = useState('for-you');
-  
+
   const filteredSounds = SOUNDS_DATA.filter(
     sound => sound.category === selectedCategory
   );
-  
+
   const renderSoundItem = ({ item, index }) => (
     <TouchableOpacity
       style={styles.soundCard}
@@ -61,10 +61,10 @@ export default function SoundsScreen() {
       <Text style={styles.soundDuration}>{item.duration}</Text>
     </TouchableOpacity>
   );
-  
+
   const renderCategorySection = (category) => {
     const isActive = selectedCategory === category.id;
-    
+
     return (
       <View key={category.id} style={styles.categorySection}>
         <View style={styles.categoryHeader}>
@@ -73,7 +73,7 @@ export default function SoundsScreen() {
             <Ionicons name="chevron-forward" size={24} color={colors.text.secondary} />
           </TouchableOpacity>
         </View>
-        
+
         <FlatList
           data={filteredSounds}
           renderItem={renderSoundItem}
@@ -85,19 +85,19 @@ export default function SoundsScreen() {
       </View>
     );
   };
-  
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <Text style={styles.screenTitle}>Sounds</Text>
-      
-      <ScrollView 
-        horizontal 
+
+      <ScrollView
+        horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.categoriesContainer}
       >
         {SOUND_CATEGORIES.map((category) => {
           const isActive = selectedCategory === category.id;
-          
+
           return (
             <TouchableOpacity
               key={category.id}
@@ -124,7 +124,7 @@ export default function SoundsScreen() {
           );
         })}
       </ScrollView>
-      
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {renderCategorySection(
           SOUND_CATEGORIES.find(cat => cat.id === selectedCategory)

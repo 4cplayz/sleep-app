@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,7 +20,7 @@ export default function WelcomeScreen() {
   const handleStart = async () => {
     // Provide haptic feedback
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    
+
     // Set flag that user has seen welcome screen
     try {
       await AsyncStorage.setItem('hasSeenWelcome', 'true');
@@ -41,12 +41,12 @@ export default function WelcomeScreen() {
       <View style={styles.content}>
         <Text style={styles.titleMain}>Aurore</Text>
         <Text style={styles.titleSub}>sleep</Text>
-        
+
         <Text style={styles.description}>
           Discover better sleep through personalized sleep tracking and soundscapes
         </Text>
       </View>
-      
+
       <TouchableOpacity style={styles.startButton} onPress={handleStart}>
         <Text style={styles.startButtonText}>Get Started</Text>
       </TouchableOpacity>

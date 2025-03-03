@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // SVG Components to render the sleep cycle graph
@@ -22,17 +22,17 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const [userData, setUserData] = useState<any>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
-  
+
   useEffect(() => {
     checkOnboarding();
     loadUserData();
   }, []);
-  
+
   const checkOnboarding = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('userData');
       const data = jsonValue != null ? JSON.parse(jsonValue) : null;
-      
+
       if (!data || !data.hasCompletedOnboarding) {
         router.replace('/onboarding');
       }
@@ -41,7 +41,7 @@ export default function HomeScreen() {
       router.replace('/onboarding');
     }
   };
-  
+
   const loadUserData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('userData');
@@ -52,15 +52,15 @@ export default function HomeScreen() {
       console.error('Error loading user data:', error);
     }
   };
-  
+
   const formatDay = (date: Date) => {
     return date.toLocaleDateString('en-US', { weekday: 'short' }).substring(0, 3);
   };
-  
+
   const getDaysOfWeek = () => {
     const today = new Date();
     const days = [];
-    
+
     for (let i = 0; i < 5; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
@@ -71,15 +71,15 @@ export default function HomeScreen() {
         isToday,
       });
     }
-    
+
     return days;
   };
-  
+
   const renderSleepCycleGraph = () => {
     // This is a simplified representation - in a real app, you'd use actual data
     const width = Dimensions.get('window').width - 80;
     const height = 120;
-    
+
     // Generate a smooth curve path for the sleep cycle
     // In a real app, you'd use actual sleep data points
     const path = `
@@ -88,23 +88,23 @@ export default function HomeScreen() {
       C ${width * 0.4} ${height * 0.6}, ${width * 0.5} ${height * 0.9}, ${width * 0.7} ${height * 0.6}
       C ${width * 0.8} ${height * 0.4}, ${width * 0.9} ${height * 0.3}, ${width} ${height * 0.1}
     `;
-    
+
     return (
       <View style={styles.graphContainer}>
         <Svg width={width} height={height}>
           {/* Sleep stage lines */}
           <Line x1="0" y1={height * 0.25} x2={width} y2={height * 0.25} stroke={colors.chart.awake} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.25 - 5} fill={colors.chart.awake} fontSize="12">Awake</SvgText>
-          
+
           <Line x1="0" y1={height * 0.5} x2={width} y2={height * 0.5} stroke={colors.chart.rem} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.5 - 5} fill={colors.chart.rem} fontSize="12">REM</SvgText>
-          
+
           <Line x1="0" y1={height * 0.75} x2={width} y2={height * 0.75} stroke={colors.chart.light} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.75 - 5} fill={colors.chart.light} fontSize="12">Light</SvgText>
-          
+
           <Line x1="0" y1={height * 0.95} x2={width} y2={height * 0.95} stroke={colors.chart.deep} strokeWidth="1" strokeOpacity="0.5" />
           <SvgText x="5" y={height * 0.95 - 5} fill={colors.chart.deep} fontSize="12">Deep</SvgText>
-          
+
           {/* Sleep cycle curve */}
           <Path
             d={path}
@@ -113,7 +113,7 @@ export default function HomeScreen() {
             fill="none"
           />
         </Svg>
-        
+
         <View style={styles.timeLabels}>
           <Text style={styles.timeLabel}>10pm</Text>
           <Text style={styles.timeLabel}>2am</Text>
@@ -122,38 +122,38 @@ export default function HomeScreen() {
       </View>
     );
   };
-  
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.welcomeText}>Welcome to</Text>
           <Text style={styles.appName}>Aurore sleep</Text>
-          
+
           <TouchableOpacity style={styles.editButton} onPress={() => router.push('/templates')}>
             <Ionicons name="create-outline" size={18} color={colors.text.secondary} />
             <Text style={styles.editButtonText}>Edit sleep cycle</Text>
           </TouchableOpacity>
         </View>
-        
+
         <View style={styles.suggestedCard}>
           <Text style={styles.sectionTitle}>Suggested for you</Text>
           <Text style={styles.sleepTypeText}>
-            {userData?.sleepGoal === 'restorative' ? 'Restorative sleep' : 
-             userData?.sleepGoal === 'deep' ? 'Deep sleep' :
-             userData?.sleepGoal === 'lucid' ? 'Lucid dreams' : 'Light sleep'}
+            {userData?.sleepGoal === 'restorative' ? 'Restorative sleep' :
+              userData?.sleepGoal === 'deep' ? 'Deep sleep' :
+                userData?.sleepGoal === 'lucid' ? 'Lucid dreams' : 'Light sleep'}
           </Text>
-          
+
           <View style={styles.sleepTimeInfo}>
             <Text style={styles.sleepHoursText}>8 hours of sleep</Text>
-            
+
             <View style={styles.timeInfo}>
               <View style={styles.timeBlock}>
                 <Ionicons name="moon-outline" size={16} color={colors.text.secondary} />
                 <Text style={styles.timeText}>Bedtime</Text>
                 <Text style={styles.timeValue}>{userData?.bedtime || '10:00 pm'}</Text>
               </View>
-              
+
               <View style={styles.timeBlock}>
                 <Ionicons name="sunny-outline" size={16} color={colors.text.secondary} />
                 <Text style={styles.timeText}>Wake-Up Time</Text>
@@ -161,14 +161,14 @@ export default function HomeScreen() {
               </View>
             </View>
           </View>
-          
+
           {renderSleepCycleGraph()}
         </View>
-        
+
         {/* Calendar Section */}
         <View style={styles.calendarSection}>
           <Text style={styles.sectionTitle}>Calendar</Text>
-          
+
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -182,7 +182,7 @@ export default function HomeScreen() {
                   styles.dayItem,
                   item.isToday && styles.currentDayItem,
                 ]}
-                onPress={() => {}}
+                onPress={() => { }}
               >
                 <Text
                   style={[
@@ -204,31 +204,31 @@ export default function HomeScreen() {
             ))}
           </ScrollView>
         </View>
-        
+
         {/* Sounds Section */}
         <View style={styles.soundsSection}>
           <Text style={styles.sectionTitle}>Sounds</Text>
-          
+
           <View style={styles.soundCategories}>
             <TouchableOpacity
               style={[styles.categoryButton, styles.activeCategory]}
-              onPress={() => {}}
+              onPress={() => { }}
             >
               <Ionicons name="person" size={22} color={colors.text.primary} />
               <Text style={styles.categoryText}>For you</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={styles.categoryButton}
-              onPress={() => {}}
+              onPress={() => { }}
             >
               <Ionicons name="star" size={22} color={colors.text.secondary} />
               <Text style={styles.categoryText}>Aurore's best</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={styles.categoryButton}
-              onPress={() => {}}
+              onPress={() => { }}
             >
               <Ionicons name="cloud" size={22} color={colors.text.secondary} />
               <Text style={styles.categoryText}>Ambiance</Text>

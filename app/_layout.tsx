@@ -1,32 +1,38 @@
 // app/_layout.tsx
 import React, { useEffect } from 'react';
-import { Slot, router, usePathname } from 'expo-router';
+import { Slot, router, useSegments, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AppProvider } from './context/AppContext';
+import { AppProvider } from '../lib/context/AppContext';
 
 export default function RootLayout() {
+  const segments = useSegments();
   const pathname = usePathname();
 
-  // Check user progress and redirect accordingly
   useEffect(() => {
     const checkUserProgress = async () => {
       try {
-        // Skip checks for these routes
-        if (pathname === '/welcome' || pathname === '/questionnaire' || pathname === '/onboarding') {
+        // Skip checks for certain routes
+        if (
+          pathname === '/welcome' ||
+          pathname === '/questionnaire' ||
+          pathname === '/onboarding'
+        ) {
           return;
         }
 
         // First, check if user has seen welcome screen
         const hasSeenWelcome = await AsyncStorage.getItem('hasSeenWelcome');
         if (!hasSeenWelcome) {
+          console.log('Redirecting to welcome screen');
           return router.replace('/welcome');
         }
 
         // Next, check if the user has completed the questionnaire
         const questionnaireData = await AsyncStorage.getItem('questionnaireData');
         if (!questionnaireData) {
+          console.log('Redirecting to questionnaire');
           return router.replace('/questionnaire');
         }
 
@@ -34,7 +40,14 @@ export default function RootLayout() {
         const jsonValue = await AsyncStorage.getItem('userData');
         const userData = jsonValue ? JSON.parse(jsonValue) : null;
         if (!userData || !userData.hasCompletedOnboarding) {
+          console.log('Redirecting to onboarding');
           return router.replace('/onboarding');
+        }
+
+        // If all checks pass and we're at the root, send to index
+        if (pathname === '/') {
+          console.log('Redirecting to home tab');
+          return router.replace('/(tabs)');
         }
       } catch (error) {
         console.error('Error checking user progress:', error);
@@ -44,7 +57,7 @@ export default function RootLayout() {
     };
 
     checkUserProgress();
-  }, [pathname]);
+  }, [pathname, segments]);
 
   return (
     <SafeAreaProvider>

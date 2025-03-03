@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function OnboardingScreen() {
@@ -53,8 +53,9 @@ export default function OnboardingScreen() {
         hasCompletedOnboarding: true
       };
       await AsyncStorage.setItem('userData', JSON.stringify(userData));
-      // Navigate to the main screen
-      router.replace('/');
+
+      // Navigate to the tab layout directly instead of root
+      router.replace('/(tabs)');
     } catch (error) {
       console.error('Error saving user data:', error);
     }
@@ -95,7 +96,7 @@ export default function OnboardingScreen() {
                   <Ionicons name="chevron-down" size={16} color={colors.text.secondary} />
                 </TouchableOpacity>
               </View>
-              
+
               <View style={styles.timeBlock}>
                 <Ionicons name="sunny-outline" size={20} color={colors.text.secondary} />
                 <Text style={styles.timeLabel}>Wake-Up Time</Text>
@@ -123,7 +124,7 @@ export default function OnboardingScreen() {
                 </View>
                 <Text style={styles.sleepGoalText}>Restorative Sleep</Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 style={[
                   styles.sleepGoalOption,
@@ -136,7 +137,7 @@ export default function OnboardingScreen() {
                 </View>
                 <Text style={styles.sleepGoalText}>Deep sleep</Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 style={[
                   styles.sleepGoalOption,
@@ -149,7 +150,7 @@ export default function OnboardingScreen() {
                 </View>
                 <Text style={styles.sleepGoalText}>Lucid dreams</Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 style={[
                   styles.sleepGoalOption,

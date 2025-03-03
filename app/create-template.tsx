@@ -13,39 +13,39 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 import * as Haptics from 'expo-haptics';
 
 export default function CreateTemplateScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  
+
   const [title, setTitle] = useState('');
   const [bedtime, setBedtime] = useState('10:00 pm');
   const [wakeupTime, setWakeupTime] = useState('6:00 am');
   const [sleepGoal, setSleepGoal] = useState('restorative');
-  
+
   const handleSave = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     // Save template logic would go here
     console.log('Saving template:', { title, bedtime, wakeupTime, sleepGoal });
     router.back();
   };
-  
+
   const calculateHours = () => {
     // This is a simplified calculation for the UI
     // In a real app, you'd want to handle time properly
     const bedHour = parseInt(bedtime.split(':')[0]);
     const wakeHour = parseInt(wakeupTime.split(':')[0]);
-    
+
     let hours = wakeHour - bedHour;
     if (bedtime.includes('pm') && wakeupTime.includes('am')) {
       hours = 12 - bedHour + wakeHour;
     }
-    
+
     return hours > 0 ? hours : 8; // Fallback to 8 hours if calculation fails
   };
-  
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -60,7 +60,7 @@ export default function CreateTemplateScreen() {
           <Text style={styles.saveButtonText}>Save</Text>
         </TouchableOpacity>
       </View>
-      
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
           {/* Title Input */}
@@ -87,7 +87,7 @@ export default function CreateTemplateScreen() {
                   <Ionicons name="chevron-down" size={16} color={colors.text.secondary} />
                 </TouchableOpacity>
               </View>
-              
+
               <View style={styles.timeBlock}>
                 <Ionicons name="sunny-outline" size={20} color={colors.text.secondary} />
                 <Text style={styles.timeLabel}>Wake-Up Time</Text>
@@ -97,7 +97,7 @@ export default function CreateTemplateScreen() {
                 </TouchableOpacity>
               </View>
             </View>
-            
+
             <Text style={styles.hoursText}>{calculateHours()} hours of sleep</Text>
           </View>
 
@@ -117,7 +117,7 @@ export default function CreateTemplateScreen() {
                 </View>
                 <Text style={styles.sleepGoalText}>Restorative Sleep</Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 style={[
                   styles.sleepGoalOption,
@@ -130,7 +130,7 @@ export default function CreateTemplateScreen() {
                 </View>
                 <Text style={styles.sleepGoalText}>Deep sleep</Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 style={[
                   styles.sleepGoalOption,
@@ -143,7 +143,7 @@ export default function CreateTemplateScreen() {
                 </View>
                 <Text style={styles.sleepGoalText}>Lucid dreams</Text>
               </TouchableOpacity>
-              
+
               <TouchableOpacity
                 style={[
                   styles.sleepGoalOption,

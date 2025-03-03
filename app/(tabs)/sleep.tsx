@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '@/app/styles/colors';
+import { colors } from '@/lib/styles/colors';
 import * as Haptics from 'expo-haptics';
 
 // SVG Components to render the sleep volume graph
@@ -21,7 +21,7 @@ export default function SleepScreen() {
   const [isSleepModeActive, setIsSleepModeActive] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [selectedSound, setSelectedSound] = useState(null);
-  
+
   // Mock templates data
   const templates = [
     {
@@ -39,14 +39,14 @@ export default function SleepScreen() {
       hours: 10,
     },
   ];
-  
+
   // Mock sound categories
   const soundCategories = [
     { id: 'for-you', title: 'For you', icon: 'person' },
     { id: 'aurores-best', title: "Aurore's best", icon: 'star' },
     { id: 'ambiance', title: 'Ambiance', icon: 'cloud' },
   ];
-  
+
   // Mock sounds
   const sounds = [
     { id: 'waves', title: 'Waves', category: 'for-you' },
@@ -56,29 +56,29 @@ export default function SleepScreen() {
     { id: 'waves3', title: 'Waves', category: 'ambiance' },
     { id: 'rain3', title: 'Rain', category: 'ambiance' },
   ];
-  
+
   useEffect(() => {
     // Initialize with first template
     if (templates.length > 0 && !selectedTemplate) {
       setSelectedTemplate(templates[0]);
     }
-    
+
     // Initialize with a sound
     if (sounds.length > 0 && !selectedSound) {
       setSelectedSound(sounds[0]);
     }
   }, []);
-  
+
   const toggleSleepMode = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setIsSleepModeActive(!isSleepModeActive);
   };
-  
+
   const renderVolumeGraph = () => {
     // This is a simplified representation - in a real app, you'd use actual data
     const width = Dimensions.get('window').width - 80;
     const height = 100;
-    
+
     // Generate a path for the volume graph
     const path = `
       M 0 ${height * 0.5}
@@ -88,7 +88,7 @@ export default function SleepScreen() {
       L ${width * 0.8} ${height * 0.4}
       L ${width} ${height * 0.6}
     `;
-    
+
     return (
       <View style={styles.graphContainer}>
         <View style={styles.volumeLabels}>
@@ -97,13 +97,13 @@ export default function SleepScreen() {
           <Text style={styles.volumeLabel}>Low</Text>
           <Text style={styles.volumeLabel}>Mute</Text>
         </View>
-        
+
         <Svg width={width} height={height}>
           {/* Horizontal reference lines */}
           <Line x1="0" y1={height * 0.25} x2={width} y2={height * 0.25} stroke={colors.text.muted} strokeWidth="1" strokeOpacity="0.3" />
           <Line x1="0" y1={height * 0.5} x2={width} y2={height * 0.5} stroke={colors.text.muted} strokeWidth="1" strokeOpacity="0.3" />
           <Line x1="0" y1={height * 0.75} x2={width} y2={height * 0.75} stroke={colors.text.muted} strokeWidth="1" strokeOpacity="0.3" />
-          
+
           {/* Volume curve */}
           <Path
             d={path}
@@ -112,7 +112,7 @@ export default function SleepScreen() {
             fill="none"
           />
         </Svg>
-        
+
         <View style={styles.timeLabels}>
           <Text style={styles.timeLabel}>10pm</Text>
           <Text style={styles.timeLabel}>2am</Text>
@@ -121,12 +121,12 @@ export default function SleepScreen() {
       </View>
     );
   };
-  
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.screenTitle}>Plan your sleep</Text>
-        
+
         {/* Calendar Days */}
         <ScrollView
           horizontal
@@ -156,25 +156,25 @@ export default function SleepScreen() {
             </TouchableOpacity>
           ))}
         </ScrollView>
-        
+
         <Text style={styles.todayText}>Today</Text>
-        
+
         {/* Template Selection */}
-        <TouchableOpacity style={styles.selectionRow} onPress={() => {/* Navigate to templates */}}>
+        <TouchableOpacity style={styles.selectionRow} onPress={() => {/* Navigate to templates */ }}>
           <Text style={styles.selectionLabel}>Choose a template</Text>
           <Ionicons name="chevron-forward" size={22} color={colors.text.secondary} />
         </TouchableOpacity>
-        
+
         {/* Sound Selection */}
         <View style={styles.soundSelectionContainer}>
-          <TouchableOpacity 
-            style={[styles.selectionRow, styles.soundSelection]} 
-            onPress={() => {/* Expand sound selection */}}
+          <TouchableOpacity
+            style={[styles.selectionRow, styles.soundSelection]}
+            onPress={() => {/* Expand sound selection */ }}
           >
             <Text style={styles.selectionLabel}>Choose your sound</Text>
             <Ionicons name="chevron-down" size={22} color={colors.text.secondary} />
           </TouchableOpacity>
-          
+
           {/* Sound Categories */}
           <View style={styles.soundCategories}>
             {soundCategories.map((category) => (
@@ -199,7 +199,7 @@ export default function SleepScreen() {
               </TouchableOpacity>
             ))}
           </View>
-          
+
           {/* Sound Grid */}
           <View style={styles.soundGrid}>
             {sounds
@@ -223,10 +223,10 @@ export default function SleepScreen() {
               ))}
           </View>
         </View>
-        
+
         {/* Volume Graph */}
         {renderVolumeGraph()}
-        
+
         {/* Alarm Setting */}
         <TouchableOpacity style={styles.alarmRow}>
           <View style={styles.alarmLeft}>
@@ -238,7 +238,7 @@ export default function SleepScreen() {
             <Ionicons name="chevron-down" size={18} color={colors.text.secondary} />
           </View>
         </TouchableOpacity>
-        
+
         {/* Setup Button */}
         <TouchableOpacity style={styles.setupButton} onPress={toggleSleepMode}>
           <Text style={styles.setupButtonText}>

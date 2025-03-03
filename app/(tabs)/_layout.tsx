@@ -6,11 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
-import { colors, tabColors } from '@/app/styles/colors';
+import { colors, tabColors } from '@/lib/styles/colors';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  
+
   return (
     <Tabs
       screenOptions={{
@@ -99,7 +99,7 @@ export default function TabLayout() {
 
 function CustomTabBar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
-  
+
   return (
     <View style={[styles.tabBarContainer, { paddingBottom: insets.bottom }]}>
       {state.routes.map((route, index) => {

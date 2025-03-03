@@ -121,8 +121,8 @@ export default function QuestionnaireScreen() {
       // Save user data to AsyncStorage
       await AsyncStorage.setItem('userData', JSON.stringify(userData));
 
-      // Navigate to the main app
-      router.replace('/');
+      // Navigate to the tab layout directly instead of root
+      router.replace('/(tabs)');
     } catch (error) {
       console.error('Error saving questionnaire data:', error);
     }
