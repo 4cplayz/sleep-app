@@ -105,6 +105,34 @@ const sections = [
       },
     ],
   },
+  {
+    title: "Type",
+    questions: [
+      {
+        id: "type domeur",
+        label: "What time do you naturally feel most awake and energized?",
+        type: "radio",
+        defaultValue: "oui",
+        options: [
+          { label: "Within 5 minutes I’m out like a light", value: "oui" },
+          { label: "30+ minutes My mind won’t shut up", value: "parfois" },
+          { label: "It depends some nights I sleep instantly, others I toss and turn", value: "jamais" },
+          { label: "It depends some nights I sleep instantly, others I toss and turn", value: "tres" },
+        ],
+      },
+      {
+        id: "sons_type",
+        label: "Sons relaxants ?",
+        type: "radio",
+        defaultValue: "statique",
+        options: [
+          { label: "Statique", value: "statique" },
+          { label: "Immersif", value: "immersif" },
+          { label: "Guidé", value: "guide" },
+        ],
+      },
+    ],
+  },
 ];
 
 
@@ -112,13 +140,13 @@ const sections = [
 
 export default function HomeScreen() {
   return (
-<ImageBackground
-  source={BACKGROUND_IMAGE}
-  style={styles.background}
-  imageStyle={{ resizeMode: 'cover' }}
->
-  <DynamicMultiStepForm sections={sections} />
-</ImageBackground>
+    <ImageBackground
+      source={BACKGROUND_IMAGE}
+      style={styles.background}
+      imageStyle={{ resizeMode: 'cover' }}
+    >
+      <DynamicMultiStepForm sections={sections} />
+    </ImageBackground>
 
   );
 }

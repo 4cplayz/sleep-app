@@ -6,11 +6,11 @@ import { RadioButton } from 'react-native-paper';
 interface RadioButtonGroupProps {
   items: { label: string; value: string }[];
   defaultValue: string;
-  width?: number;
+  width?: string;
   onValueChange?: (value: string) => void;
 }
 
-const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({ items, defaultValue, width = 250, onValueChange }) => {
+const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({ items, defaultValue, width = "250", onValueChange }) => {
   const [value, setValue] = React.useState(defaultValue || (items.length > 0 ? items[0].value : ''));
 
   const handleValueChange = (newValue: string) => {

@@ -116,6 +116,7 @@ const DynamicMultiStepForm: React.FC<DynamicMultiStepFormProps> = ({ sections, o
                   <View key={question.id} style={styles.componentContainer}>
                     <Text style={styles.questionLabel}>{question.label}</Text>
                     <RadioButtonGroup
+                      width="100%"
                       items={question.options || []}
                       defaultValue={question.defaultValue || ''}
                       onValueChange={(value: string) => handleInputChange(question.id, value)}
