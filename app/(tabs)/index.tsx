@@ -1,4 +1,4 @@
-// app/index.tsx
+// app/(tabs)/index.tsx
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -24,23 +24,9 @@ export default function HomeScreen() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
-    checkOnboarding();
+    // Remove the checkOnboarding call and just load user data
     loadUserData();
   }, []);
-
-  const checkOnboarding = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('userData');
-      const data = jsonValue != null ? JSON.parse(jsonValue) : null;
-
-      if (!data || !data.hasCompletedOnboarding) {
-        router.replace('/onboarding');
-      }
-    } catch (error) {
-      console.error('Error checking onboarding status:', error);
-      router.replace('/onboarding');
-    }
-  };
 
   const loadUserData = async () => {
     try {
@@ -57,6 +43,9 @@ export default function HomeScreen() {
     return date.toLocaleDateString('en-US', { weekday: 'short' }).substring(0, 3);
   };
 
+  // Rest of your component code...
+  
+  // The existing code is kept for all the UI and functionality
   const getDaysOfWeek = () => {
     const today = new Date();
     const days = [];
@@ -386,4 +375,4 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     marginLeft: 6,
   },
-})
+});

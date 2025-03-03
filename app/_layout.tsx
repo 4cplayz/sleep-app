@@ -1,69 +1,76 @@
 // app/_layout.tsx
-import React, { useEffect } from 'react';
-import { Slot, router, useSegments, usePathname } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Slot, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppProvider } from '../lib/context/AppContext';
 
-export default function RootLayout() {
+// This component handles the navigation logic but only after the initial render
+function NavigationHandler() {
   const segments = useSegments();
-  const pathname = usePathname();
-
+  const router = useRouter();
+  
   useEffect(() => {
+    // This function runs on mount to determine the correct initial screen
     const checkUserProgress = async () => {
       try {
-        // Skip checks for certain routes
-        if (
-          pathname === '/welcome' ||
-          pathname === '/questionnaire' ||
-          pathname === '/onboarding'
-        ) {
+        // Skip navigation logic for specific screens
+        if (segments[0] === 'welcome' || segments[0] === 'questionnaire' || segments[0] === 'onboarding') {
           return;
         }
 
-        // First, check if user has seen welcome screen
+        // For development: Uncomment to reset AsyncStorage
+        // await AsyncStorage.multiRemove(['hasSeenWelcome', 'questionnaireData', 'userData']);
+        // console.log('AsyncStorage reset for development');
+
         const hasSeenWelcome = await AsyncStorage.getItem('hasSeenWelcome');
         if (!hasSeenWelcome) {
-          console.log('Redirecting to welcome screen');
-          return router.replace('/welcome');
+          router.replace('/welcome');
+          return;
         }
 
-        // Next, check if the user has completed the questionnaire
         const questionnaireData = await AsyncStorage.getItem('questionnaireData');
         if (!questionnaireData) {
-          console.log('Redirecting to questionnaire');
-          return router.replace('/questionnaire');
+          router.replace('/questionnaire');
+          return;
         }
 
-        // Finally, check if the user has completed onboarding
-        const jsonValue = await AsyncStorage.getItem('userData');
-        const userData = jsonValue ? JSON.parse(jsonValue) : null;
-        if (!userData || !userData.hasCompletedOnboarding) {
-          console.log('Redirecting to onboarding');
-          return router.replace('/onboarding');
+        const userData = await AsyncStorage.getItem('userData');
+        const parsedUserData = userData ? JSON.parse(userData) : null;
+        if (!parsedUserData || !parsedUserData.hasCompletedOnboarding) {
+          router.replace('/onboarding');
+          return;
         }
 
-        // If all checks pass and we're at the root, send to index
-        if (pathname === '/') {
-          console.log('Redirecting to home tab');
-          return router.replace('/(tabs)');
+        // If all checks pass and we're at the root, navigate to tabs
+        if (segments.length === 0 || segments[0] === '' || segments[0] === 'index') {
+          router.replace('/(tabs)');
         }
       } catch (error) {
         console.error('Error checking user progress:', error);
-        // If there's an error, fall back to welcome screen
         router.replace('/welcome');
       }
     };
 
-    checkUserProgress();
-  }, [pathname, segments]);
+    // We need to ensure the layout is fully mounted before navigating
+    const timer = setTimeout(() => {
+      checkUserProgress();
+    }, 0);
 
+    return () => clearTimeout(timer);
+  }, [router, segments]);
+
+  return null;
+}
+
+export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <AppProvider>
         <StatusBar style="light" />
         <Slot />
+        <NavigationHandler />
       </AppProvider>
     </SafeAreaProvider>
   );
