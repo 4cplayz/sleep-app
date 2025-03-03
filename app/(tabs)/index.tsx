@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '/app/styles/colors.ts';
+import { colors } from '@/app/styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // SVG Components to render the sleep cycle graph

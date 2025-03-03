@@ -1,150 +1,4 @@
-// app/profile.tsx
-import React, { useState, useEffect }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.primary.dark,
-    padding: 20,
-  },
-  screenTitle: {
-    fontSize: 28,
-    fontWeight: '600',
-    color: colors.text.primary,
-    marginBottom: 24,
-  },
-  userInfoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.ui.card,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 24,
-  },
-  avatarPlaceholder: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: colors.ui.cardHighlight,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  userTextContainer: {
-    flex: 1,
-  },
-  userName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.text.primary,
-    marginBottom: 4,
-  },
-  userEmail: {
-    fontSize: 14,
-    color: colors.text.secondary,
-  },
-  editProfileButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: colors.ui.cardHighlight,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  statsSummaryContainer: {
-    backgroundColor: colors.ui.card,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 24,
-  },
-  statItem: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  statValue: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: colors.text.primary,
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: 14,
-    color: colors.text.secondary,
-  },
-  viewStatsButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 12,
-    backgroundColor: colors.ui.cardHighlight,
-    borderRadius: 8,
-  },
-  viewStatsText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: colors.text.primary,
-    marginRight: 4,
-  },
-  settingsContainer: {
-    backgroundColor: colors.ui.card,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.text.primary,
-    marginBottom: 16,
-  },
-  settingItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.ui.border,
-  },
-  settingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.ui.border,
-  },
-  settingItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  settingTextContainer: {
-    marginLeft: 12,
-  },
-  settingTitle: {
-    fontSize: 16,
-    color: colors.text.primary,
-    marginLeft: 12,
-  },
-  settingDescription: {
-    fontSize: 12,
-    color: colors.text.secondary,
-    marginTop: 2,
-  },
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-    padding: 16,
-    borderRadius: 12,
-  },
-  logoutText: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: colors.functional.error,
-    marginLeft: 8,
-  },
-}); from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -158,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { colors } from './styles/colors';
+import { colors } from '@/app/styles/colors';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -362,3 +216,149 @@ export default function ProfileScreen() {
       </ScrollView>
     </View>
   );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.primary.dark,
+    padding: 20,
+  },
+  screenTitle: {
+    fontSize: 28,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginBottom: 24,
+  },
+  userInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.ui.card,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+  },
+  avatarPlaceholder: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: colors.ui.cardHighlight,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  userTextContainer: {
+    flex: 1,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginBottom: 4,
+  },
+  userEmail: {
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  editProfileButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.ui.cardHighlight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  statsSummaryContainer: {
+    backgroundColor: colors.ui.card,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+  },
+  statItem: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  statValue: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: colors.text.primary,
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  viewStatsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    backgroundColor: colors.ui.cardHighlight,
+    borderRadius: 8,
+  },
+  viewStatsText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: colors.text.primary,
+    marginRight: 4,
+  },
+  settingsContainer: {
+    backgroundColor: colors.ui.card,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginBottom: 16,
+  },
+  settingItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.ui.border,
+  },
+  settingRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.ui.border,
+  },
+  settingItemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  settingTextContainer: {
+    marginLeft: 12,
+  },
+  settingTitle: {
+    fontSize: 16,
+    color: colors.text.primary,
+    marginLeft: 12,
+  },
+  settingDescription: {
+    fontSize: 12,
+    color: colors.text.secondary,
+    marginTop: 2,
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    padding: 16,
+    borderRadius: 12,
+  },
+  logoutText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: colors.functional.error,
+    marginLeft: 8,
+  },
+});

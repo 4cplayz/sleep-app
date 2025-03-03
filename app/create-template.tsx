@@ -13,7 +13,7 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from './styles/colors';
+import { colors } from '@/app/styles/colors';
 import * as Haptics from 'expo-haptics';
 
 export default function CreateTemplateScreen() {

@@ -1,4 +1,4 @@
-// app/calendar.tsx
+// app/(tabs)/calendar.tsx
 import React, { useState } from 'react';
 import {
   View,
@@ -10,14 +10,13 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from './styles/colors';
+import { colors } from '@/app/styles/colors';
 
 export default function CalendarScreen() {
   const insets = useSafeAreaInsets();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  
   // Mock sleep data
   const sleepData = {
     '2025-03-01': { hours: 7.5, quality: 'Good' },

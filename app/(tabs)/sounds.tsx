@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from './styles/colors';
+import { colors } from '@/app/styles/colors';
 
 // Mock data for sound categories
 const SOUND_CATEGORIES = [

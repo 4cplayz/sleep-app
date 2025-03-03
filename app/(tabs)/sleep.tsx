@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from './styles/colors';
+import { colors } from '@/app/styles/colors';
 import * as Haptics from 'expo-haptics';
 
 // SVG Components to render the sleep volume graph

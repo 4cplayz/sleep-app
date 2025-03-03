@@ -3,7 +3,8 @@ import { Tabs } from "expo-router";
 import { useColorScheme, View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors, tabColors } from "../styles/colors";
+import { colors, tabColors } from "@/app/styles/colors";
+
 
 export default function TabsLayout() {
   const insets = useSafeAreaInsets();
