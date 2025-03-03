@@ -1,5 +1,5 @@
 // app/onboarding.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,26 @@ export default function OnboardingScreen() {
   const [bedtime, setBedtime] = useState('10:00 pm');
   const [wakeupTime, setWakeupTime] = useState('6:00 am');
   const [sleepGoal, setSleepGoal] = useState('restorative');
+
+  // Load data from questionnaire if available
+  useEffect(() => {
+    const loadQuestionnaireData = async () => {
+      try {
+        const questionnaireData = await AsyncStorage.getItem('questionnaireData');
+        if (questionnaireData) {
+          const data = JSON.parse(questionnaireData);
+          if (data.name) setName(data.name);
+          if (data.bedtime) setBedtime(data.bedtime);
+          if (data.wakeupTime) setWakeupTime(data.wakeupTime);
+          if (data.sleepGoal) setSleepGoal(data.sleepGoal);
+        }
+      } catch (error) {
+        console.error('Error loading questionnaire data:', error);
+      }
+    };
+
+    loadQuestionnaireData();
+  }, []);
 
   const handleComplete = async () => {
     // Save user information to AsyncStorage
@@ -47,13 +67,13 @@ export default function OnboardingScreen() {
     >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.title}>Create your template</Text>
+          <Text style={styles.title}>Customize your template</Text>
         </View>
 
         <View style={styles.form}>
           {/* Title Input */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Title</Text>
+            <Text style={styles.label}>Name</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter your name"
@@ -178,7 +198,7 @@ export default function OnboardingScreen() {
 
           {/* Set Up Button */}
           <TouchableOpacity style={styles.button} onPress={handleComplete}>
-            <Text style={styles.buttonText}>Set Up</Text>
+            <Text style={styles.buttonText}>Get Started</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -9,26 +9,41 @@ import { AppProvider } from './context/AppContext';
 export default function RootLayout() {
   const pathname = usePathname();
 
-  // Check if the user has completed onboarding and redirect accordingly
+  // Check user progress and redirect accordingly
   useEffect(() => {
-    const checkOnboarding = async () => {
+    const checkUserProgress = async () => {
       try {
-        // Skip this check for the onboarding route itself
-        if (pathname === '/onboarding') return;
+        // Skip checks for these routes
+        if (pathname === '/welcome' || pathname === '/questionnaire' || pathname === '/onboarding') {
+          return;
+        }
 
+        // First, check if user has seen welcome screen
+        const hasSeenWelcome = await AsyncStorage.getItem('hasSeenWelcome');
+        if (!hasSeenWelcome) {
+          return router.replace('/welcome');
+        }
+
+        // Next, check if the user has completed the questionnaire
+        const questionnaireData = await AsyncStorage.getItem('questionnaireData');
+        if (!questionnaireData) {
+          return router.replace('/questionnaire');
+        }
+
+        // Finally, check if the user has completed onboarding
         const jsonValue = await AsyncStorage.getItem('userData');
-        const data = jsonValue != null ? JSON.parse(jsonValue) : null;
-
-        // If this is the first app launch or user hasn't completed onboarding, redirect to onboarding
-        if (!data || !data.hasCompletedOnboarding) {
-          router.replace('/onboarding');
+        const userData = jsonValue ? JSON.parse(jsonValue) : null;
+        if (!userData || !userData.hasCompletedOnboarding) {
+          return router.replace('/onboarding');
         }
       } catch (error) {
-        console.error('Error checking onboarding status:', error);
+        console.error('Error checking user progress:', error);
+        // If there's an error, fall back to welcome screen
+        router.replace('/welcome');
       }
     };
 
-    checkOnboarding();
+    checkUserProgress();
   }, [pathname]);
 
   return (
